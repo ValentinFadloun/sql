@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS tp4.user (
   id_user INT NOT NULL auto_increment,
   nom VARCHAR(40) NOT NULL,
   prenom VARCHAR(40) NOT NULL,
-  password VARCHAR(50) NOT NULL,
+  password VARCHAR(500) NOT NULL,
   email VARCHAR(255) NOT NULL,
   PRIMARY KEY (id_user)
 );

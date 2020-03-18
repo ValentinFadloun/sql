@@ -30,3 +30,5 @@ insert into tp2.langue(nom_langue) values ("Français"), ("Anglais"), ("Espagnol
 insert into tp2.pays(nom_pays) values ("France"), ("Etat Unis"), ("Maroc"), ("Espagne"), ("Belgique");
 insert into tp2.pays_langue(id_langue, id_pays) values	( 1, 1), ( 2, 2), (3, 4), (4, 3), (1, 3), (1, 5);
 insert into tp2.ville(nom_ville, code_postal, id_pays) values	("Lille", "59600", 1), ("Marrakech", "????", 3), ("New York", "???", 2), ("Valence", "???", 4), ("Bruxelle", "????", 5), ("Paris", "93000", 1);
+
+select tp2.pays.nom_pays from tp2.pays inner join tp2.pays_langue on tp2.pays_langue.id_pays = tp2.pays.id_pays inner join tp2.langue on tp2.pays_langue.id_langue = tp2.langue.id_langue WHERE tp2.langue.nom_langue = "Anglais";
