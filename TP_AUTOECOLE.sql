@@ -76,4 +76,18 @@ ALTER TABLE autoecole.serie_question add constraint FK_serie_serie_question fore
 ALTER TABLE autoecole.question add constraint FK_theme_question foreign key (id_theme) references autoecole.theme(id_theme) on update cascade on delete restrict;
 ALTER TABLE autoecole.eleve_sceance add constraint FK_eleve_eleve_sceance foreign key (num_eleve) references autoecole.eleve(num_eleve) on update cascade on delete restrict;
 ALTER TABLE autoecole.eleve_sceance add constraint FK_seance_eleve_sceance foreign key (id_seance) references autoecole.seance(id_seance) on update cascade on delete restrict;
+ALTER TABLE autoecole.seance add constraint FK_serie_sceance foreign key (num_serie) references autoecole.serie(id_serie) on update cascade on delete restrict;
 
+# Nombre erreur moyenne sur cd 14 et serie 5
+SELECT AVG(el_seance.num_erreur) as moyenne_erreur FROM autoecole.seance as seance 
+INNER JOIN autoecole.eleve_sceance as el_seance ON seance.id_seance = el_seance.id_seance 
+WHERE seance.num_cd = 14 AND seance.num_serie = 5;
+
+# Eleves qui se presente a l'exam
+SELECT eleve.nom, eleve.prenom FROM autoecole.eleve_sceance as el_seance 
+INNER JOIN autoecole.eleve as eleve ON el_seance.num_eleve = eleve.num_eleve 
+INNER JOIN autoecole.seance as seance ON el_seance.id_seance = seance.id_seance
+WHERE ( SELECT el_seance.num_erreur FROM autoecole.eleve_sceance as el_seance 
+			INNER JOIN autoecole.eleve as eleve ON el_seance.num_eleve = eleve.num_eleve 
+			INNER JOIN autoecole.seance as seance ON el_seance.id_seance = seance.id_seance
+			WHERE eleve.num_eleve = el_seance.num_eleve ORDER BY seance.date_seance ASC LIMIT 5) BETWEEN 0 AND 5;
