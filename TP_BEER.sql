@@ -48,3 +48,9 @@ INNER JOIN article ON article.ID_ARTICLE = ventes.ID_ARTICLE GROUP BY ventes.ANN
 SELECT article.NOM_ARTICLE, SUM(ventes.QUANTITE) FROM ventes INNER JOIN article ON article.ID_ARTICLE = ventes.ID_ARTICLE WHERE ventes.ANNEE = 2016 GROUP BY article.NOM_ARTICLE;
 # 19
 SELECT ventes.ANNEE, article.NOM_ARTICLE, SUM(ventes.QUANTITE) FROM ventes INNER JOIN article ON article.ID_ARTICLE = ventes.ID_ARTICLE GROUP BY article.NOM_ARTICLE,ventes.ANNEE;
+# 20
+SELECT NOM_ARTICLE from article 
+WHERE NOM_ARTICLE NOT IN (SELECT article.NOM_ARTICLE FROM ventes 
+							INNER JOIN article ON article.ID_ARTICLE = ventes.ID_ARTICLE 
+							WHERE ventes.ANNEE = 2014 GROUP BY article.NOM_ARTICLE) 
+group by NOM_ARTICLE;
