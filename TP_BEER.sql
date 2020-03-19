@@ -96,3 +96,8 @@ INNER JOIN marque ON marque.ID_MARQUE = article.ID_MARQUE
 INNER JOIN fabricant ON fabricant.ID_FABRICANT = marque.ID_FABRICANT
 WHERE ventes.ANNEE = 2014
 GROUP BY fabricant.NOM_FABRICANT;
+# 26
+SELECT article.ID_ARTICLE, article.NOM_ARTICLE, article.VOLUME, SUM(ventes.QUANTITE) as quantite FROM article
+INNER JOIN ventes ON article.ID_ARTICLE = ventes.ID_ARTICLE
+WHERE ventes.ANNEE = 2016
+GROUP BY article.NOM_ARTICLE ORDER BY quantite DESC LIMIT 20;
