@@ -76,3 +76,7 @@ WHERE marque.ID_MARQUE IN (SELECT marque.ID_MARQUE FROM marque
 															INNER JOIN type ON type.ID_TYPE = article.ID_TYPE
 															WHERE type.NOM_TYPE = "Trappiste"));
 # 22
+SELECT DISTINCT ticket.* FROM ticket 
+INNER JOIN ventes ON ventes.NUMERO_TICKET = ticket.NUMERO_TICKET AND ventes.ANNEE = ticket.ANNEE
+WHERE ventes.ID_ARTICLE IN (SELECT ID_ARTICLE FROM ventes WHERE NUMERO_TICKET = 856 AND ANNEE = 2014);
+# 23
