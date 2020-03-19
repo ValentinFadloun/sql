@@ -46,3 +46,5 @@ SELECT ventes.ANNEE, SUM(article.PRIX_ACHAT) as CA, SUM(article.PRIX_ACHAT+(arti
 INNER JOIN article ON article.ID_ARTICLE = ventes.ID_ARTICLE GROUP BY ventes.ANNEE;
 # 18
 SELECT article.NOM_ARTICLE, SUM(ventes.QUANTITE) FROM ventes INNER JOIN article ON article.ID_ARTICLE = ventes.ID_ARTICLE WHERE ventes.ANNEE = 2016 GROUP BY article.NOM_ARTICLE;
+# 19
+SELECT ventes.ANNEE, article.NOM_ARTICLE, SUM(ventes.QUANTITE) FROM ventes INNER JOIN article ON article.ID_ARTICLE = ventes.ID_ARTICLE GROUP BY article.NOM_ARTICLE,ventes.ANNEE;
