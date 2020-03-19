@@ -17,3 +17,5 @@ SELECT DISTINCT ticket.* FROM ventes INNER JOIN ticket ON ventes.NUMERO_TICKET =
 SELECT article.ID_ARTICLE, article.NOM_ARTICLE, couleur.NOM_COULEUR FROM article INNER JOIN couleur ON article.ID_Couleur = couleur.ID_Couleur ORDER BY couleur.NOM_COULEUR;
 # 8 sans le nom de couleur
 SELECT article.ID_ARTICLE, article.NOM_ARTICLE FROM article INNER JOIN couleur ON article.ID_Couleur = couleur.ID_Couleur ORDER BY couleur.NOM_COULEUR;
+# 9
+SELECT ID_ARTICLE, NOM_ARTICLE FROM article WHERE ID_Couleur IS NULL;
