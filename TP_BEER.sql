@@ -54,3 +54,9 @@ WHERE NOM_ARTICLE NOT IN (SELECT article.NOM_ARTICLE FROM ventes
 							INNER JOIN article ON article.ID_ARTICLE = ventes.ID_ARTICLE 
 							WHERE ventes.ANNEE = 2014 GROUP BY article.NOM_ARTICLE) 
 group by NOM_ARTICLE;
+# 21
+SELECT DISTINCT pays.NOM_PAYS FROM article 
+INNER JOIN type ON type.ID_TYPE = article.ID_TYPE
+INNER JOIN marque ON marque.ID_MARQUE = article.ID_MARQUE
+INNER JOIN pays ON pays.ID_PAYS = marque.ID_PAYS
+WHERE type.NOM_TYPE = "Trappiste";
