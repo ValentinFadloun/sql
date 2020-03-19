@@ -10,7 +10,7 @@ SELECT article.* FROM article INNER JOIN ventes ON ventes.ID_ARTICLE = article.I
 # 5
 SELECT DISTINCT ticket.* FROM ventes INNER JOIN ticket ON ventes.NUMERO_TICKET = ticket.NUMERO_TICKET AND ventes.ANNEE = ticket.ANNEE WHERE ticket.DATE_VENTE LIKE "2014-03-%";
 # 6
-SELECT DISTINCT ticket.* FROM ventes INNER JOIN ticket ON ventes.NUMERO_TICKET = ticket.NUMERO_TICKET AND ventes.ANNEE = ticket.ANNEE WHERE ticket.DATE_VENTE BETWEEN "2014-03-01 00:00:00" AND "2014-04-30 00:00:00";
+SELECT DISTINCT ticket.* FROM ventes INNER JOIN ticket ON ventes.NUMERO_TICKET = ticket.NUMERO_TICKET AND ventes.ANNEE = ticket.ANNEE WHERE ticket.DATE_VENTE = "2014-03-01 00:00:00" AND ticket.DATE_VENTE =  "2014-04-30 00:00:00";
 # 7
 SELECT DISTINCT ticket.* FROM ventes INNER JOIN ticket ON ventes.NUMERO_TICKET = ticket.NUMERO_TICKET AND ventes.ANNEE = ticket.ANNEE WHERE ticket.DATE_VENTE LIKE "2014-03-%" OR ticket.DATE_VENTE LIKE "2014-06-%";
 # 8 j'affiche aussi le nom de la couleur pour que on vois bien que c'est classé 
@@ -19,3 +19,5 @@ SELECT article.ID_ARTICLE, article.NOM_ARTICLE, couleur.NOM_COULEUR FROM article
 SELECT article.ID_ARTICLE, article.NOM_ARTICLE FROM article INNER JOIN couleur ON article.ID_Couleur = couleur.ID_Couleur ORDER BY couleur.NOM_COULEUR;
 # 9
 SELECT ID_ARTICLE, NOM_ARTICLE FROM article WHERE ID_Couleur IS NULL;
+# 10
+SELECT NUMERO_TICKET, SUM(QUANTITE), ID_ARTICLE FROM ventes ORDER BY NUMERO_TICKET DESC;
