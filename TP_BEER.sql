@@ -136,9 +136,32 @@ GROUP BY article.ID_ARTICLE
 HAVING SUM(ventes.QUANTITE) >= (SELECT SUM(QUANTITE-(QUANTITE*15/100)) as quantite FROM ventes
 									WHERE ANNEE = 2016 GROUP BY ID_ARTICLE ORDER BY quantite DESC LIMIT 1);
 # 32
-UPDATE article SET article.PRIX_ACHAT = article.PRIX_ACHAT+(article.PRIX_ACHAT*10/100) WHERE type.NOM_TYPE = "Trappiste" AND couleur.NOM_COULEUR = "Blonde";
+UPDATE article INNER JOIN type USING(ID_TYPE) INNER JOIN couleur ON couleur.ID_Couleur = article.ID_COULEUR
+SET article.PRIX_ACHAT = article.PRIX_ACHAT+(article.PRIX_ACHAT*10/100) 
+WHERE type.NOM_TYPE = "Trappiste" AND couleur.NOM_COULEUR = "Blonde";
 # 32 select test
 SELECT article.PRIX_ACHAT+(article.PRIX_ACHAT*10/100), article.PRIX_ACHAT FROM article
 INNER JOIN type USING(ID_TYPE)
 INNER JOIN couleur ON couleur.ID_Couleur = article.ID_COULEUR
 WHERE type.NOM_TYPE = "Trappiste" AND couleur.NOM_COULEUR = "Blonde";
+# 33
+UPDATE article as art
+INNER JOIN type USING(ID_TYPE)
+INNER JOIN couleur USING(ID_Couleur)
+INNER JOIN (SELECT MIN(TITRAGE) as newtitrage, ID_TYPE, ID_Couleur FROM article GROUP BY ID_TYPE, ID_Couleur ) as arti ON arti.ID_TYPE = type.ID_TYPE
+SET art.TITRAGE = arti.newtitrage
+WHERE art.TITRAGE IS NULL AND arti.ID_TYPE = art.ID_TYPE AND arti.ID_Couleur = art.ID_Couleur;
+# 33 requete test
+SELECT art.*, (SELECT MIN(article.TITRAGE) FROM article 
+				INNER JOIN type USING(ID_TYPE)
+				INNER JOIN couleur USING(ID_Couleur)
+				WHERE type.ID_TYPE = art.ID_TYPE and couleur.ID_Couleur = art.ID_Couleur) FROM article as art;
+SELECT MIN(TITRAGE) as newtitrage, ID_TYPE, ID_Couleur FROM article GROUP BY ID_TYPE, ID_Couleur ORDER BY ID_TYPE, ID_Couleur;
+SELECT * FROM article WHERE TITRAGE IS NULL;
+# 34 
+DELETE art FROM article as art
+INNER JOIN type as ty USING(ID_TYPE)
+WHERE ty.NOM_TYPE = "Bière Aromatisée";
+
+SELECT * FROM article INNER JOIN type as ty USING(ID_TYPE)
+WHERE ty.NOM_TYPE = "Bière Aromatisée";
