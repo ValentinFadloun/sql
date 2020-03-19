@@ -4,11 +4,12 @@ SELECT ventes.NUMERO_TICKET FROM ventes WHERE ventes.ID_ARTICLE = 500;
 # 2
 SELECT DISTINCT ticket.* FROM ventes INNER JOIN ticket ON ventes.NUMERO_TICKET = ticket.NUMERO_TICKET AND ventes.ANNEE = ticket.ANNEE WHERE ticket.DATE_VENTE = "2014-01-15 00:00:00";
 # 3
-SELECT DISTINCT ticket.* FROM ventes INNER JOIN ticket ON ventes.NUMERO_TICKET = ticket.NUMERO_TICKET AND ventes.ANNEE = ticket.ANNEE WHERE ticket.DATE_VENTE = "2014-01-15 00:00:00" and ticket.DATE_VENTE = "2014-01-17 00:00:00";
+SELECT * FROM ticket WHERE DATE_VENTE = "2014-01-15 00:00:00" or DATE_VENTE = "2014-01-17 00:00:00";
 # 4
 SELECT article.* FROM article INNER JOIN ventes ON ventes.ID_ARTICLE = article.ID_ARTICLE WHERE ventes.QUANTITE >= 50 ;
 # 5
-SELECT DISTINCT ticket.* FROM ventes INNER JOIN ticket ON ventes.NUMERO_TICKET = ticket.NUMERO_TICKET AND ventes.ANNEE = ticket.ANNEE WHERE ticket.DATE_VENTE LIKE "2014-03-%";
+SELECT DISTINCT ticket.* FROM ticket WHERE ticket.DATE_VENTE LIKE "2014-03-%";
+SELECT DISTINCT ticket.* FROM ticket WHERE month(DATE_VENTE) = "03" and annee = "2014";
 # 6
 SELECT DISTINCT ticket.* FROM ventes INNER JOIN ticket ON ventes.NUMERO_TICKET = ticket.NUMERO_TICKET AND ventes.ANNEE = ticket.ANNEE WHERE ticket.DATE_VENTE BETWEEN "2014-03-01 00:00:00" AND "2014-04-30 00:00:00";
 # 7
@@ -97,10 +98,10 @@ INNER JOIN ventes USING(ID_ARTICLE)
 WHERE ventes.ANNEE = 2014
 GROUP BY fabricant.NOM_FABRICANT;
 # 26
-SELECT article.ID_ARTICLE, article.NOM_ARTICLE, article.VOLUME, SUM(ventes.QUANTITE) as quantite FROM article
+SELECT article.ID_ARTICLE, article.NOM_ARTICLE, article.VOLUME, SUM(ventes.QUANTITE) as quantitet FROM article
 INNER JOIN ventes ON article.ID_ARTICLE = ventes.ID_ARTICLE
 WHERE ventes.ANNEE = 2016
-GROUP BY article.NOM_ARTICLE ORDER BY quantite DESC LIMIT 20;
+GROUP BY article.NOM_ARTICLE ORDER BY quantitet DESC LIMIT 20;
 # 27
 SELECT article.ID_ARTICLE, article.NOM_ARTICLE, article.VOLUME, SUM(ventes.QUANTITE) as quantite FROM article
 INNER JOIN ventes ON article.ID_ARTICLE = ventes.ID_ARTICLE
@@ -117,7 +118,7 @@ INNER JOIN (SELECT ventes.ID_article as id_art ,SUM(ventes.QUANTITE) as quantite
 			GROUP BY ventes.ID_ARTICLE) as quantite2016 ON quantite2016.id_art = article.ID_ARTICLE AND quantite2016.id_art = quantite2015.id_art
 WHERE (((quantite2016.quantite2016-quantite2015.quantite2015)/quantite2016.quantite2016)*100 BETWEEN -1 AND 1 );
 # 29
-SELECT article.ID_ARTICLE, article.NOM_ARTICLE, article.VOLUME, quantite2015.quantite2015 as quantite_2015, quantite2016.quantite2016 as quantite_2016 FROM article
+SELECT article.ID_ARTICLE, article.NOM_ARTICLE, article.VOLUME, quantite2015.quantite2015 as quantite_2015, quantite2016.quantite2016 as quantite_2016 , ((quantite2016.quantite2016-quantite2015.quantite2015)) as variation ,(((quantite2016.quantite2016-quantite2015.quantite2015)/quantite2015.quantite2015)*100) as variationPct  FROM article
 INNER JOIN (SELECT ventes.ID_article as id_art ,SUM(ventes.QUANTITE) as quantite2015 FROM ventes
 			WHERE ventes.ANNEE = 2015
 			GROUP BY ventes.ID_ARTICLE) as quantite2015 ON quantite2015.id_art = article.ID_ARTICLE
@@ -125,3 +126,12 @@ INNER JOIN (SELECT ventes.ID_article as id_art ,SUM(ventes.QUANTITE) as quantite
 			WHERE ventes.ANNEE = 2016
 			GROUP BY ventes.ID_ARTICLE) as quantite2016 ON quantite2016.id_art = article.ID_ARTICLE AND quantite2016.id_art = quantite2015.id_art
 ORDER BY ((quantite2016.quantite2016-quantite2015.quantite2015)) DESC;
+# 30
+SELECT * from ticket WHERE NUMERO_TICKET NOT IN (SELECT NUMERO_TICKET FROM ventes);
+# 31
+SELECT article.*,SUM(ventes.QUANTITE) FROM article
+INNER JOIN ventes USING(ID_ARTICLE)
+WHERE ventes.ANNEE = 2016 
+GROUP BY article.ID_ARTICLE
+HAVING SUM(ventes.QUANTITE) >= (SELECT SUM(QUANTITE-(QUANTITE*15/100)) as quantite FROM ventes
+									WHERE ANNEE = 2016 GROUP BY ID_ARTICLE ORDER BY quantite DESC LIMIT 1);
