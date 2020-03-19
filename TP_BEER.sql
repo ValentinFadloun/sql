@@ -1,6 +1,6 @@
 USE beer;
 # 1
-SELECT ventes.NUMERO_TICKET FROM ventes INNER JOIN article ON ventes.ID_ARTICLE = article.ID_ARTICLE WHERE article.ID_ARTICLE = 500;
+SELECT ventes.NUMERO_TICKET FROM ventes WHERE ventes.ID_ARTICLE = 500;
 # 2
 SELECT DISTINCT ticket.* FROM ventes INNER JOIN ticket ON ventes.NUMERO_TICKET = ticket.NUMERO_TICKET AND ventes.ANNEE = ticket.ANNEE WHERE ticket.DATE_VENTE = "2014-01-15 00:00:00";
 # 3
@@ -25,3 +25,16 @@ SELECT NUMERO_TICKET, SUM(QUANTITE) FROM ventes GROUP BY NUMERO_TICKET ORDER BY 
 SELECT NUMERO_TICKET, SUM(QUANTITE) as quantitetotal FROM ventes GROUP BY NUMERO_TICKET HAVING quantitetotal >= 500 ORDER BY NUMERO_TICKET DESC;
 # 12
 SELECT NUMERO_TICKET, SUM(QUANTITE) as quantitetotal FROM ventes WHERE QUANTITE < 50 GROUP BY NUMERO_TICKET HAVING quantitetotal >= 500 ORDER BY NUMERO_TICKET DESC;
+# 13
+SELECT article.ID_ARTICLE, article.NOM_ARTICLE, article.VOLUME, article.TITRAGE FROM article INNER JOIN type ON type.ID_TYPE = article.ID_TYPE WHERE type.NOM_TYPE = "Trappiste";
+# 14
+SELECT marque.* FROM  marque 
+INNER JOIN pays ON pays.ID_PAYS = marque.ID_PAYS 
+INNER JOIN continent ON continent.ID_CONTINENT = pays.ID_CONTINENT
+WHERE continent.NOM_CONTINENT = "Afrique";
+# 15
+SELECT article.* FROM article 
+INNER JOIN marque ON marque.ID_MARQUE = article.ID_MARQUE 
+INNER JOIN pays ON pays.ID_PAYS = marque.ID_PAYS 
+INNER JOIN continent ON continent.ID_CONTINENT = pays.ID_CONTINENT
+WHERE continent.NOM_CONTINENT = "Afrique";
