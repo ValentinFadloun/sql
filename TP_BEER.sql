@@ -42,5 +42,7 @@ WHERE continent.NOM_CONTINENT = "Afrique";
 SELECT ventes.ANNEE, ventes.NUMERO_TICKET, SUM(article.PRIX_ACHAT+(article.PRIX_ACHAT*(15/100))) FROM ventes 
 INNER JOIN article ON article.ID_ARTICLE = ventes.ID_ARTICLE GROUP BY ventes.NUMERO_TICKET, ventes.ANNEE;
 # 17
-SELECT ventes.ANNEE, SUM(article.PRIX_ACHAT), SUM(article.PRIX_ACHAT+(article.PRIX_ACHAT*(15/100))) FROM ventes 
+SELECT ventes.ANNEE, SUM(article.PRIX_ACHAT) as CA, SUM(article.PRIX_ACHAT+(article.PRIX_ACHAT*(15/100))) as CA15 FROM ventes 
 INNER JOIN article ON article.ID_ARTICLE = ventes.ID_ARTICLE GROUP BY ventes.ANNEE;
+# 18
+SELECT article.NOM_ARTICLE, SUM(ventes.QUANTITE) FROM ventes INNER JOIN article ON article.ID_ARTICLE = ventes.ID_ARTICLE WHERE ventes.ANNEE = 2016 GROUP BY article.NOM_ARTICLE;
