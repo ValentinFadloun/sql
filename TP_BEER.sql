@@ -135,3 +135,10 @@ WHERE ventes.ANNEE = 2016
 GROUP BY article.ID_ARTICLE
 HAVING SUM(ventes.QUANTITE) >= (SELECT SUM(QUANTITE-(QUANTITE*15/100)) as quantite FROM ventes
 									WHERE ANNEE = 2016 GROUP BY ID_ARTICLE ORDER BY quantite DESC LIMIT 1);
+# 32
+UPDATE article SET article.PRIX_ACHAT = article.PRIX_ACHAT+(article.PRIX_ACHAT*10/100) WHERE type.NOM_TYPE = "Trappiste" AND couleur.NOM_COULEUR = "Blonde";
+# 32 select test
+SELECT article.PRIX_ACHAT+(article.PRIX_ACHAT*10/100), article.PRIX_ACHAT FROM article
+INNER JOIN type USING(ID_TYPE)
+INNER JOIN couleur ON couleur.ID_Couleur = article.ID_COULEUR
+WHERE type.NOM_TYPE = "Trappiste" AND couleur.NOM_COULEUR = "Blonde";
