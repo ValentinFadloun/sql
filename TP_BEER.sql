@@ -89,3 +89,10 @@ INNER JOIN ventes ON ventes.ID_ARTICLE = article.ID_ARTICLE
 INNER JOIN couleur ON couleur.ID_Couleur = article.ID_Couleur
 WHERE ventes.ANNEE = 2014
 GROUP BY couleur.NOM_COULEUR;
+# 25
+SELECT fabricant.NOM_FABRICANT, SUM(DISTINCT ventes.NUMERO_TICKET) FROM article
+INNER JOIN ventes ON ventes.ID_ARTICLE = article.ID_ARTICLE
+INNER JOIN marque ON marque.ID_MARQUE = article.ID_MARQUE
+INNER JOIN fabricant ON fabricant.ID_FABRICANT = marque.ID_FABRICANT
+WHERE ventes.ANNEE = 2014
+GROUP BY fabricant.NOM_FABRICANT;
