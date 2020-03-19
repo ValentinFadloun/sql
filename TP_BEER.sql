@@ -83,3 +83,9 @@ WHERE ventes.ID_ARTICLE IN (SELECT ID_ARTICLE FROM ventes WHERE NUMERO_TICKET = 
 SELECT NOM_ARTICLE, TITRAGE FROM article WHERE TITRAGE > (SELECT MAX(article.TITRAGE) FROM article
 													INNER JOIN type ON article.ID_TYPE = type.ID_TYPE
                                                     WHERE type.NOM_TYPE = "Trappiste");
+# 24
+SELECT SUM(ventes.QUANTITE), couleur.NOM_COULEUR FROM article
+INNER JOIN ventes ON ventes.ID_ARTICLE = article.ID_ARTICLE
+INNER JOIN couleur ON couleur.ID_Couleur = article.ID_Couleur
+WHERE ventes.ANNEE = 2014
+GROUP BY couleur.NOM_COULEUR;
