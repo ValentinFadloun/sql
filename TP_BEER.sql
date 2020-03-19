@@ -80,3 +80,6 @@ SELECT DISTINCT ticket.* FROM ticket
 INNER JOIN ventes ON ventes.NUMERO_TICKET = ticket.NUMERO_TICKET AND ventes.ANNEE = ticket.ANNEE
 WHERE ventes.ID_ARTICLE IN (SELECT ID_ARTICLE FROM ventes WHERE NUMERO_TICKET = 856 AND ANNEE = 2014);
 # 23
+SELECT NOM_ARTICLE, TITRAGE FROM article WHERE TITRAGE > (SELECT MAX(article.TITRAGE) FROM article
+													INNER JOIN type ON article.ID_TYPE = type.ID_TYPE
+                                                    WHERE type.NOM_TYPE = "Trappiste");
