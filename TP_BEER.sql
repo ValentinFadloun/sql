@@ -55,7 +55,7 @@ WHERE NOM_ARTICLE NOT IN (SELECT article.NOM_ARTICLE FROM ventes
 							WHERE ventes.ANNEE = 2014 GROUP BY article.NOM_ARTICLE) 
 group by NOM_ARTICLE;
 # 21 - 1
-SELECT pays.NOM_PAYS FROM article 
+SELECT DISTINCT pays.NOM_PAYS FROM article 
 INNER JOIN type ON type.ID_TYPE = article.ID_TYPE
 INNER JOIN marque ON marque.ID_MARQUE = article.ID_MARQUE
 INNER JOIN pays ON pays.ID_PAYS = marque.ID_PAYS
@@ -90,10 +90,10 @@ INNER JOIN couleur ON couleur.ID_Couleur = article.ID_Couleur
 WHERE ventes.ANNEE = 2014
 GROUP BY couleur.NOM_COULEUR;
 # 25
-SELECT fabricant.NOM_FABRICANT, SUM(DISTINCT ventes.NUMERO_TICKET) FROM article
-INNER JOIN ventes ON ventes.ID_ARTICLE = article.ID_ARTICLE
-INNER JOIN marque ON marque.ID_MARQUE = article.ID_MARQUE
-INNER JOIN fabricant ON fabricant.ID_FABRICANT = marque.ID_FABRICANT
+SELECT fabricant.NOM_FABRICANT, COUNT(DISTINCT ventes.NUMERO_TICKET) FROM fabricant
+INNER JOIN marque ON fabricant.ID_FABRICANT = marque.ID_FABRICANT
+INNER JOIN article ON marque.ID_MARQUE = article.ID_MARQUE
+INNER JOIN ventes USING(ID_ARTICLE)
 WHERE ventes.ANNEE = 2014
 GROUP BY fabricant.NOM_FABRICANT;
 # 26
@@ -107,3 +107,21 @@ INNER JOIN ventes ON article.ID_ARTICLE = ventes.ID_ARTICLE
 INNER JOIN type ON article.ID_TYPE = type.ID_TYPE
 WHERE ventes.ANNEE = 2016 AND type.NOM_TYPE = "Trappiste"
 GROUP BY article.NOM_ARTICLE ORDER BY quantite DESC LIMIT 5;
+# 28
+SELECT article.ID_ARTICLE, article.NOM_ARTICLE, article.VOLUME, quantite2015.quantite2015 as quantite_2015, quantite2016.quantite2016 as quantite_2016 FROM article
+INNER JOIN (SELECT ventes.ID_article as id_art ,SUM(ventes.QUANTITE) as quantite2015 FROM ventes
+			WHERE ventes.ANNEE = 2015
+			GROUP BY ventes.ID_ARTICLE) as quantite2015 ON quantite2015.id_art = article.ID_ARTICLE
+INNER JOIN (SELECT ventes.ID_article as id_art ,SUM(ventes.QUANTITE) as quantite2016 FROM ventes
+			WHERE ventes.ANNEE = 2016
+			GROUP BY ventes.ID_ARTICLE) as quantite2016 ON quantite2016.id_art = article.ID_ARTICLE AND quantite2016.id_art = quantite2015.id_art
+WHERE (((quantite2016.quantite2016-quantite2015.quantite2015)/quantite2016.quantite2016)*100 BETWEEN -1 AND 1 );
+# 29
+SELECT article.ID_ARTICLE, article.NOM_ARTICLE, article.VOLUME, quantite2015.quantite2015 as quantite_2015, quantite2016.quantite2016 as quantite_2016 FROM article
+INNER JOIN (SELECT ventes.ID_article as id_art ,SUM(ventes.QUANTITE) as quantite2015 FROM ventes
+			WHERE ventes.ANNEE = 2015
+			GROUP BY ventes.ID_ARTICLE) as quantite2015 ON quantite2015.id_art = article.ID_ARTICLE
+INNER JOIN (SELECT ventes.ID_article as id_art ,SUM(ventes.QUANTITE) as quantite2016 FROM ventes
+			WHERE ventes.ANNEE = 2016
+			GROUP BY ventes.ID_ARTICLE) as quantite2016 ON quantite2016.id_art = article.ID_ARTICLE AND quantite2016.id_art = quantite2015.id_art
+ORDER BY ((quantite2016.quantite2016-quantite2015.quantite2015)) DESC;
