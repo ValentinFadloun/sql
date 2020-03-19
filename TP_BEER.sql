@@ -54,9 +54,25 @@ WHERE NOM_ARTICLE NOT IN (SELECT article.NOM_ARTICLE FROM ventes
 							INNER JOIN article ON article.ID_ARTICLE = ventes.ID_ARTICLE 
 							WHERE ventes.ANNEE = 2014 GROUP BY article.NOM_ARTICLE) 
 group by NOM_ARTICLE;
-# 21
-SELECT DISTINCT pays.NOM_PAYS FROM article 
+# 21 - 1
+SELECT pays.NOM_PAYS FROM article 
 INNER JOIN type ON type.ID_TYPE = article.ID_TYPE
 INNER JOIN marque ON marque.ID_MARQUE = article.ID_MARQUE
 INNER JOIN pays ON pays.ID_PAYS = marque.ID_PAYS
 WHERE type.NOM_TYPE = "Trappiste";
+# 21 - 2
+SELECT DISTINCT pays.NOM_PAYS FROM pays
+INNER JOIN marque ON marque.ID_PAYS = pays.ID_PAYS
+WHERE marque.ID_MARQUE IN (SELECT marque.ID_MARQUE FROM marque 
+							INNER JOIN article ON marque.ID_MARQUE = article.ID_MARQUE
+                            INNER JOIN type ON type.ID_TYPE = article.ID_TYPE
+							WHERE type.NOM_TYPE = "Trappiste");
+# 21 - 3
+SELECT DISTINCT pays.NOM_PAYS FROM pays
+INNER JOIN marque ON marque.ID_PAYS = pays.ID_PAYS
+WHERE marque.ID_MARQUE IN (SELECT marque.ID_MARQUE FROM marque 
+							INNER JOIN article ON marque.ID_MARQUE = article.ID_MARQUE
+                            WHERE article.ID_ARTICLE IN (SELECT article.ID_ARTICLE FROM article
+															INNER JOIN type ON type.ID_TYPE = article.ID_TYPE
+															WHERE type.NOM_TYPE = "Trappiste"));
+# 22
