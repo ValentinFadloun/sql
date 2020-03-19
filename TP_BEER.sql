@@ -101,3 +101,9 @@ SELECT article.ID_ARTICLE, article.NOM_ARTICLE, article.VOLUME, SUM(ventes.QUANT
 INNER JOIN ventes ON article.ID_ARTICLE = ventes.ID_ARTICLE
 WHERE ventes.ANNEE = 2016
 GROUP BY article.NOM_ARTICLE ORDER BY quantite DESC LIMIT 20;
+# 27
+SELECT article.ID_ARTICLE, article.NOM_ARTICLE, article.VOLUME, SUM(ventes.QUANTITE) as quantite FROM article
+INNER JOIN ventes ON article.ID_ARTICLE = ventes.ID_ARTICLE
+INNER JOIN type ON article.ID_TYPE = type.ID_TYPE
+WHERE ventes.ANNEE = 2016 AND type.NOM_TYPE = "Trappiste"
+GROUP BY article.NOM_ARTICLE ORDER BY quantite DESC LIMIT 5;
