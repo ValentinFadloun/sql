@@ -1,3 +1,4 @@
+use northwind;
 # 1
 SELECT * FROM employees WHERE city = "Seattle";
 SELECT * FROM customers WHERE city = "Seattle";
@@ -13,3 +14,6 @@ SELECT employees.* from employees
 INNER JOIN employee_privileges ON employee_privileges.employee_id = employees.id
 INNER JOIN privileges ON privileges.id = employee_privileges.privilege_id
 WHERE privileges.privilege_name = "Purchase Approvals";
+
+# 3
+SELECT * FROM products WHERE category = 'Condiments';
