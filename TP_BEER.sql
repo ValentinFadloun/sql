@@ -127,7 +127,7 @@ INNER JOIN (SELECT ventes.ID_article as id_art ,SUM(ventes.QUANTITE) as quantite
 			GROUP BY ventes.ID_ARTICLE) as quantite2016 ON quantite2016.id_art = article.ID_ARTICLE AND quantite2016.id_art = quantite2015.id_art
 ORDER BY ((quantite2016.quantite2016-quantite2015.quantite2015)) DESC;
 # 30
-SELECT * from ticket WHERE NUMERO_TICKET NOT IN (SELECT NUMERO_TICKET FROM ventes);
+SELECT * FROM ticket WHERE CONCAT(NUMERO_TICKET,ANNEE) NOT IN (SELECT CONCAT(NUMERO_TICKET,ANNEE) FROM ventes);
 # 31
 SELECT article.*,SUM(ventes.QUANTITE) FROM article
 INNER JOIN ventes USING(ID_ARTICLE)
@@ -172,3 +172,13 @@ SELECT * from ticket WHERE NUMERO_TICKET NOT IN (SELECT NUMERO_TICKET FROM vente
 SELECT  QUANTITE, NUMERO_TICKET, ANNEE
  FROM beer.ventes
 ORDER BY QUANTITE DESC;
+
+
+SELECT ventes.ANNEE, ventes.NUMERO_TICKET, SUM(article.PRIX_ACHAT*1.15) as PRIX_VENTE FROM ticket
+INNER JOIN ventes ON ventes.ANNEE = ticket.ANNEE AND ticket.NUMERO_TICKET = ventes.NUMERO_TICKET
+INNER JOIN article ON article.ID_ARTICLE = ventes.ID_ARTICLE
+GROUP BY ticket.NUMERO_TICKET, ticket.ANNEE;
+
+SELECT ventes.ANNEE, ventes.NUMERO_TICKET, ROUND(SUM((article.PRIX_ACHAT+(article.PRIX_ACHAT*(15/100)))*ventes.QUANTITE)) FROM ventes 
+INNER JOIN article ON article.ID_ARTICLE = ventes.ID_ARTICLE GROUP BY ventes.NUMERO_TICKET, ventes.ANNEE;
+
